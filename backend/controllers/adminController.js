@@ -1,24 +1,24 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
-import cloudinary from '../Utils/cloudinary.js';
+
 
 // @desc    Auth user & get token
-// @route   POST /api/users/auth
+// @route   POST /api/admin/auth
 
-const authUser = asyncHandler(async (req, res) => {
+const authAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const admin = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id,'user');
+  if (admin &&  admin.isAdmin &&(await admin.matchPassword(password))) {
+    generateToken(res, admin._id, 'admin');
 
     res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      profileImage:user.profileImage
+      _id: admin._id,
+      name: admin.name,
+      email: admin.email,
+      profileImage:admin.profileImage
     });
   } else {
     res.status(401);
@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateToken(res, user._id,'user');
+    generateToken(res, user._id);
 
     res.status(201).json({
       _id: user._id,
@@ -63,19 +63,12 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 
 const logoutUser = (req, res) => {
-  res.cookie('user', '', {
+  res.cookie('jwt', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: 'strict',
     expires: new Date(0),
-    path: '/', // Ensure this matches how it was set
   });
-  console.log("Cookie removed");
   res.status(200).json({ message: 'Logged out successfully' });
 };
-
-
-
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
@@ -145,7 +138,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 export {
-  authUser,
+    authAdmin,
   registerUser,
   logoutUser,
   getUserProfile,

@@ -1,8 +1,12 @@
 import React from 'react'
+import NavBar from '../Components/NavBar'
 
 const home = () => {
+
   return (
-    <div className="relative w-full h-screen">
+  <>
+    <NavBar/>
+   <div className="relative w-full h-screen">
     <img
       className="hidden sm:block absolute w-full h-full object-cover"
       src="/src/Images/background.png"
@@ -16,6 +20,8 @@ const home = () => {
       </div>
     </div>
   </div>
+  </>
+   
   )
 }
 

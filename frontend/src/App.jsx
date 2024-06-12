@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Routes} from 'react-router-dom';
-import NavBar from './Components/NavBar'
+
 import SignIn from './pages/SignIn';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,13 +10,17 @@ import store from './Store';
 import { Provider } from 'react-redux';
 import Profile from './pages/Profile';
 import PrivateRoute from './Components/PrivateRoute';
+import AdminLogin from './pages/Admin/AdminLogin';
+import AdminHome from './pages/Admin/AdminHome';
+import UsersList from './pages/Admin/UsersList';
+import AdminPrivateRoute from './Components/AdminPrivateRoute';
 
 const App = () => {
   return (
     <>
     <Provider store={store}>
       <ToastContainer/>
-      <NavBar/>
+      
       <Routes>
       <Route path='/login' element={<SignIn/>}/>
       <Route path='/' element={<Home/>}/>
@@ -25,7 +29,18 @@ const App = () => {
          <Route path='' element={<PrivateRoute/>}>
                <Route path='/profile' element={<Profile/>}/>
           </Route>
+
+          <Route path='/admin/login' element={<AdminLogin/>}/>
+          <Route path='/admin' element={<AdminHome/>}/>
+          <Route path='' element={<AdminPrivateRoute/>}>
+          <Route path='/admin/usersList' element={<UsersList/>}/>
+          </Route>
+         
+
       </Routes>
+      
+
+
       </Provider>
     </>
   )
