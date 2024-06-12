@@ -12,7 +12,7 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id,'user');
+    generateToken(res, user._id ,'user');
 
     res.json({
       _id: user._id,
@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateToken(res, user._id,'user');
+    generateToken(res, user._id);
 
     res.status(201).json({
       _id: user._id,
@@ -65,17 +65,10 @@ const registerUser = asyncHandler(async (req, res) => {
 const logoutUser = (req, res) => {
   res.cookie('user', '', {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: 'strict',
     expires: new Date(0),
-    path: '/', // Ensure this matches how it was set
   });
-  console.log("Cookie removed");
   res.status(200).json({ message: 'Logged out successfully' });
 };
-
-
-
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
