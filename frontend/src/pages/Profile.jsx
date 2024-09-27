@@ -36,9 +36,7 @@ const Profile = () => {
   const uploadImageToCloudinary = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'kih91uwt');
-    formData.append('cloud_name', 'djfhotv8n'); 
-    formData.append('folder', 'profileImages');
+   
   
     try {
       const response = await fetch('https://api.cloudinary.com/v1_1/djfhotv8n/image/upload', { 
